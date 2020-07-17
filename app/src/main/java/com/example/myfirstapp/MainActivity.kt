@@ -1,26 +1,33 @@
 package com.example.myfirstapp
 
-import androidx.appcompat.app.AppCompatActivity
-import android.content.Intent
+import android.app.DatePickerDialog
+import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
+import android.widget.DatePicker
+// need to import for Kotlin Android Extensions
+import kotlinx.android.synthetic.main.activity_main.*
 
-const val EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE"
+import java.util.Locale
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : FragmentActivity(), DatePickerDialog.OnDateSetListener {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
     }
 
-    /** Called when the user taps the Send button */
-    fun sendMessage(view: View){
-        val editText = findViewById<EditText>(R.id.editText)
-        val message = editText.text.toString()
-        val intent = Intent(this, DisplayMessageActivity::class.java).apply {
-            putExtra(EXTRA_MESSAGE, message)
-        }
-        startActivity(intent)
+    override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+
+        val str = String.format(Locale.US, "%d/%d/%d", year, monthOfYear+1, dayOfMonth)
+        textView.text = str
+
+    }
+
+    fun showDatePickerDialog(v: View) {
+        val newFragment = DatePick()
+        newFragment.show(supportFragmentManager, "datePicker")
+
     }
 }
